@@ -20,7 +20,7 @@
         return Number(this.desiredSalary) + (Number(this.desiredSalary) * (Number(this.benefitsPct) / 100)) + (Number(this.desiredSalary) * (Number(this.bonusPct) / 100));
       },
       totalDays() {
-        return ((365 - (Number(this.weekendDays) + Number(this.publicHoliday)) + Number(this.mandatoryHoliday) + Number(this.sickDays))*((100-Number(this.nonBillablePct))/100);
+        return Number(365 - (Number(this.weekendDays) + Number(this.publicHoliday) + Number(this.mandatoryHoliday) + Number(this.sickDays))*Number(100-Number(this.nonBillablePct))/100);
       },
       dayRate() {
         var dr =  Number(this.targetSalary) / Number(this.totalDays);

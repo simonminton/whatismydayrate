@@ -34,7 +34,7 @@
         return dr;
       },
       monthlyRate() {
-        var mr =  Number(this.targetSalary) / 12;
+        var mr =  Number(this.targetSalary) / (Number(this.totalDays)/12);
         // format as currency
         return mr;
       },
@@ -108,15 +108,19 @@
       <p class="text-white w-full text-center text-4xl font-semibold mb-4">{{ targetSalary.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) }}</p>
       <p class="w-full text-center text-lg font-semibold text-white mb-3">Freelance rates are:</p>
       <div class="flex flex-row w-full">
-        <div class="w-1/3">
+        <div class="w-1/4">
           <p class="text-white font-bold text-center uppercase text-opacity-50 text-sm mb-2">Hourly</p>
           <p class="text-white text-xl font-bold text-center">{{ Math.ceil(hourlyRate).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) }}</p>  
         </div>
-        <div class="w-1/3">
+         <div class="w-1/4">
+          <p class="text-white font-bold text-center uppercase text-opacity-50 text-sm mb-2">Daily</p>
+          <p class="text-white text-xl font-bold text-center">{{ Math.ceil(dayRate).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) }}</p>  
+        </div>
+        <div class="w-1/4">
           <p class="text-white font-bold text-center uppercase text-opacity-50 text-sm mb-2">Weekly</p>
           <p class="text-white text-xl font-bold text-center">{{ Math.ceil(weeklyRate).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) }}</p>  
         </div>
-        <div class="w-1/3">
+        <div class="w-1/4">
           <p class="text-white font-bold text-center uppercase text-opacity-50 text-sm mb-2">Monthly</p>
           <p class="text-white text-xl font-bold text-center">{{ Math.ceil(monthlyRate).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) }}</p>  
         </div>

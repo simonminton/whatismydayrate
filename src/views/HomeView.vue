@@ -1,6 +1,9 @@
 <script>
-
+  import CalcBox from '@/components/CalcBox.vue'
   export default {
+    components: {
+      CalcBox
+    },
     data() {
       return {
         desiredSalary: 100000,
@@ -30,31 +33,148 @@
         // format as currency
         return dr;
       },
+      monthlyRate() {
+        var mr =  Number(this.targetSalary) / 12;
+        // format as currency
+        return mr;
+      },
+      weeklyRate() {
+        var wr =  Number(this.targetSalary) / Number(this.totalDays) * 5;
+        // format as currency
+        return wr;
+      },
       hourlyRate() {
         var hr =  Number(this.dayRate) / Number(this.hours);
         // format as currency
         return hr;
-      }
+      },
+      
     }
   }
 </script>
 
 <template>
-  <main>
-    <header>
-<h1 class="text-3xl text-center my-10">What is my day rate?</h1>
-    </header>
-    <section class="bg-gray-50 py-10">
-      <h1 class="text-2xl text-center">Target salary:</h1>
-      <input class="border border-slate-200 mx-auto flex text-2xl text-center rounded-md" type="number" v-model="desiredSalary" />
+  <main class="px-4">
+    
+      SWITCH
+      <h4 class="text-sm text-center text-opacity-50 -mb-6 text-lightGray my-10 uppercase tracking-big">Freelancer Pay</h4>
+      <h1 class="text-center mb-0 headerText font-bold text-5xl leading-mega">What is my day rate?</h1>
+   
+    <section class="mb-12">
+      <h2 class="text-white mb-12 text-xl font-semibold leading-8 max-w-2xl mx-auto text-center">As freelancers, we can often forget about key aspects of what we would receive as salaried employees, when setting our rates.</h2>
+      <h3 class=" text-xl mb-3 font-bold leading-6 text-center text-white">Your target annual income</h3>
+      <input class="border-4 mb-3 border-white mx-auto flex text-2xl font-semibold text-center rounded-xl max-w-lg bg-nearBlack w-full text-white py-4" type="number" v-model="desiredSalary" />
+      <p class="text-lightGray text-opacity-50 text-sm text-center leading-6">This is your equivelant salaried income</p>
     </section>
-    <section class="text-center text-lg max-w-3xl mx-auto py-10">
-      <p class="mb-6">We start with your target salary of {{ desiredSalary.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }} before deductions (tax etc.). Most salaried positions come with some form of benefits (healthcare, pension contributions and more), and we estimate that replacing these would cost about <input type="number" class="inline border-b-2 border-slate-500 w-10 text-center" v-model="benefitsPct" />% of that salary. Then, most professional salaried employees would hope for a bonus, again, we assume <input type="number" class="inline border-b-2 border-slate-500 w-10 text-center" v-model="bonusPct" />%. That leaves us with a target of {{ targetSalary.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }} to make.</p>
-      <p class="mb-6">Of the 365 days in a year, <input type="number" class="inline border-b-2 border-slate-500 w-12 text-center" v-model="weekendDays" /> are weekends. We think you are in {{ country }} and our data says you have <input type="number" class="inline border-b-2 border-slate-500 w-10 text-center" v-model="publicHoliday" /> paid public holidays. We've also used that data to match your country's mandatory paid holiday: <input type="number" class="inline border-b-2 border-slate-500 w-10 text-center" v-model="mandatoryHoliday" /> days</p>
-      <p class="mb-6">The average number of unplanned (sick or otherwise) days worldwide is 6.4, but we'll use <input type="number" class="inline border-b-2 border-slate-500 w-10 text-center" v-model="sickDays" /> to be safe.</p>
-      <p class="mb-6">Finally, as a freelancer, approximately <input type="number" class="inline border-b-2 border-slate-500 w-10 text-center" v-model="nonBillablePct" />% of your time is spent on non-billable work, so we take that out of the picture too.</p>
-      <p class="mb-6">That gives us {{ targetSalary.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }}/{{ totalDays }} days for a day rate of {{ dayRate.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }}. We'd recommend rounding that up to the nearest 5 for the sake of sane accounting.</p>
-      <p class="mb-6">Assuming you work <input type="number" class="inline border-b-2 border-slate-500 w-10 text-center" v-model="hours" /> hours each day, thay's an hourly rate of {{ hourlyRate.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }}.</p>
+    <CalcBox>
+      <template v-slot:title>Benefits</template>
+      <template v-slot:description>Most salaries positions come with healthcare, pension or 401k contributions and more.</template>
+      <template v-slot:input><input type="number" class="bg-transparent w-10 border-b border-dashed border-lightGray" v-model="benefitsPct" /></template>
+      
+    </CalcBox>
+    <CalcBox>
+      <template v-slot:title>Bonus</template>
+      <template v-slot:description>Doing well in your job as an employee, usually means you receive bonuses and equity compensation.</template>
+      <template v-slot:input><input type="number" class="bg-transparent w-10 border-b border-dashed border-lightGray" v-model="bonusPct" /></template>
+      <template v-slot:secondary>The average bonus in tech is 15-25%</template>
+    </CalcBox>
+    <CalcBox>
+      <template v-slot:title>Vacation days</template>
+      <template v-slot:description>Don’t receive unlimited vacation days as a freelancer?</template>
+      <template v-slot:input><input type="number" class="bg-transparent w-10 border-b border-dashed border-lightGray" v-model="mandatoryHoliday" /></template>
+      <template v-slot:secondary>The average bonus in tech is 15-25%</template>
+    </CalcBox>
+    <CalcBox>
+      <template v-slot:title>Public holidays</template>
+      <template v-slot:description>You might work public holidays, but you shouldn’t factor them into your income target.</template>
+      <template v-slot:input><input type="number" class="bg-transparent w-10 border-b border-dashed border-lightGray" v-model="publicHoliday" /></template>
+      <template v-slot:secondary>We’ve defaulted to the US. View your countries</template>
+    </CalcBox>
+    <CalcBox>
+      <template v-slot:title>Sick days</template>
+      <template v-slot:description>The average number of unplanned days off (sick or otherwise) worldwide is 6.4 days.</template>
+      <template v-slot:input><input type="number" class="bg-transparent w-10 border-b border-dashed border-lightGray" v-model="sickDays" /></template>
+      
+    </CalcBox>
+    <CalcBox>
+      <template v-slot:title>Non-billable work</template>
+      <template v-slot:description>As a freelancer, you’ll spend time on non-billable work. This should be accounted for.</template>
+      <template v-slot:input><input type="number" class="bg-transparent w-10 border-b border-dashed border-lightGray" v-model="nonBillablePct" /></template>
+      
+    </CalcBox>
+    
+    <section class="flex flex-row flex-wrap py-8 px-6 bg-nearBlack border-4 border-white rounded-xl max-w-lg mx-auto mb-12">
+      <p class="w-full text-center text-lg font-semibold text-white mb-3">True target earnings:</p>
+      <p class="text-white w-full text-center text-4xl font-semibold mb-4">{{ targetSalary.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) }}</p>
+      <p class="w-full text-center text-lg font-semibold text-white mb-3">Freelance rates are:</p>
+      <div class="flex flex-row w-full">
+        <div class="w-1/3">
+          <p class="text-white font-bold text-center uppercase text-opacity-50 text-sm mb-2">Hourly</p>
+          <p class="text-white text-xl font-bold text-center">{{ Math.ceil(hourlyRate).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) }}</p>  
+        </div>
+        <div class="w-1/3">
+          <p class="text-white font-bold text-center uppercase text-opacity-50 text-sm mb-2">Weekly</p>
+          <p class="text-white text-xl font-bold text-center">{{ Math.ceil(weeklyRate).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) }}</p>  
+        </div>
+        <div class="w-1/3">
+          <p class="text-white font-bold text-center uppercase text-opacity-50 text-sm mb-2">Monthly</p>
+          <p class="text-white text-xl font-bold text-center">{{ Math.ceil(monthlyRate).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) }}</p>  
+        </div>
+      </div>
     </section>
   </main>
 </template>
+
+<style scoped>
+.headerText {
+background: linear-gradient(90.53deg, #9E00FF 0.94%, #FF006B 99.81%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+
+text-shadow: 0px 88px 25px rgba(240, 8, 105, 0.01), 0px 56px 23px rgba(240, 8, 105, 0.04), 0px 32px 19px rgba(240, 8, 105, 0.15), 0px 14px 14px rgba(240, 8, 105, 0.26), 0px 4px 8px rgba(240, 8, 105, 0.29), 0px 0px 0px rgba(240, 8, 105, 0.3);
+}
+.result {
+    border-radius: 100000px;
+    background: conic-gradient(from 180deg at 50% 50%, #66119A 0deg, #27B3BC 101.25deg, #BC5D27 172.5deg, #BC2766 273.75deg, #66119A 360deg);
+    filter: blur(40px);
+    opacity: 1;
+    animation-name: rotatebg;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+@keyframes bloom {
+  0% {
+      filter: blur(10px);
+      opacity: 0.2;
+  }
+  25% {
+      filter: blur(10px);
+      opacity: 1;
+  }
+  90% {
+      filter: blur(80px);
+      opacity: 1;
+  }
+  90% {
+      filter: blur(40px);
+      opacity: 1;
+  }
+}
+@keyframes rotatebg {
+  0% {
+      transform: rotate(0deg);
+      filter: blur(calc(var(--size)/12));
+  }
+  50% {
+      transform: rotate(180deg);
+      filter: blur(calc(var(--size)/4));
+  }
+  100% {
+      transform: rotate(360deg);
+      filter: blur(calc(var(--size)/12));
+  }
+}
+</style>

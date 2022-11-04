@@ -69,41 +69,73 @@
     <CalcBox>
       <template v-slot:title>Benefits</template>
       <template v-slot:description>Most salaries positions come with healthcare, pension or 401k contributions and more.</template>
-      <template v-slot:input><input type="number" class="bg-transparent w-10 border-b border-dashed border-lightGray" v-model="benefitsPct" /></template>
+      <template v-slot:input>
+        <div class="border-b border-dashed focus-within:border-opacity-100 border-opacity-50 border-lightGray">
+          <input type="number" min="0" max="300" class="bg-transparent w-6 focus:outline-none focus-visible:ring-none focus-visible:border-none text-right mr-2" v-model="benefitsPct" />
+          <span class="">%</span>
+        </div>
+        
+      </template>
       
     </CalcBox>
     <CalcBox>
       <template v-slot:title>Bonus</template>
       <template v-slot:description>Doing well in your job as an employee, usually means you receive bonuses and equity compensation.</template>
-      <template v-slot:input><input type="number" class="bg-transparent w-10 border-b border-dashed border-lightGray" v-model="bonusPct" /></template>
+      <template v-slot:input>
+        <div class="border-b border-dashed focus-within:border-opacity-100 border-opacity-50 border-lightGray">
+          <input type="number" min="0" max="300" class="bg-transparent w-6 focus:outline-none focus-visible:ring-none focus-visible:border-none text-right mr-2" v-model="bonusPct" />
+          <span class="">%</span>
+        </div>  
+      </template>
       <template v-slot:secondary>The average bonus in tech is 15-25%</template>
     </CalcBox>
     <CalcBox>
       <template v-slot:title>Vacation days</template>
       <template v-slot:description>Don’t receive unlimited vacation days as a freelancer?</template>
-      <template v-slot:input><input type="number" class="bg-transparent w-10 border-b border-dashed border-lightGray" v-model="mandatoryHoliday" /></template>
+      <template v-slot:input>
+        <div class="border-b border-dashed focus-within:border-opacity-100 border-opacity-50 border-lightGray">
+          <input type="number" min="0" max="300" class="bg-transparent w-6 focus:outline-none focus-visible:ring-none focus-visible:border-none text-right mr-2" v-model="mandatoryHoliday" />
+          <span>days</span>
+        </div>
+      </template>
       <template v-slot:secondary>The average bonus in tech is 15-25%</template>
     </CalcBox>
     <CalcBox>
       <template v-slot:title>Public holidays</template>
       <template v-slot:description>You might work public holidays, but you shouldn’t factor them into your income target.</template>
-      <template v-slot:input><input type="number" class="bg-transparent w-10 border-b border-dashed border-lightGray" v-model="publicHoliday" /></template>
+      <template v-slot:input>
+        <div class="border-b border-dashed focus-within:border-opacity-100 border-opacity-50 border-lightGray">
+          <input type="number" min="0" max="300" class="bg-transparent w-6 focus:outline-none focus-visible:ring-none focus-visible:border-none text-right mr-2" v-model="publicHoliday" />
+          <span>days</span>
+        </div>
+      </template>
       <template v-slot:secondary>We’ve defaulted to the US. View your countries</template>
     </CalcBox>
     <CalcBox>
       <template v-slot:title>Sick days</template>
       <template v-slot:description>The average number of unplanned days off (sick or otherwise) worldwide is 6.4 days.</template>
-      <template v-slot:input><input type="number" class="bg-transparent w-10 border-b border-dashed border-lightGray" v-model="sickDays" /></template>
-      
+      <template v-slot:input>
+        <div class="border-b border-dashed focus-within:border-opacity-100 border-opacity-50 border-lightGray">
+          <input type="number" min="0" max="300" class="bg-transparent w-6 focus:outline-none focus-visible:ring-none focus-visible:border-none text-right mr-2" v-model="sickDays" />
+          <span>days</span>
+        </div>
+      </template>
     </CalcBox>
     <CalcBox>
       <template v-slot:title>Non-billable work</template>
       <template v-slot:description>As a freelancer, you’ll spend time on non-billable work. This should be accounted for.</template>
-      <template v-slot:input><input type="number" class="bg-transparent w-10 border-b border-dashed border-lightGray" v-model="nonBillablePct" /></template>
+      <template v-slot:input>
+        <div class="border-b border-dashed focus-within:border-opacity-100 border-opacity-50 border-lightGray">
+          <input type="number" min="0" max="300" class="bg-transparent w-6  focus:outline-none focus-visible:ring-none focus-visible:border-none text-right mr-2" v-model="nonBillablePct" />
+          <span class="">%</span>
+        </div>
+        </template>
       
     </CalcBox>
     
-    <section class="flex flex-row flex-wrap py-8 px-6 bg-nearBlack border-4 border-white rounded-xl max-w-lg mx-auto mb-12">
+    <section class="grid grid-cols-1 grid-rows-1">
+    <div class="flex flex-row relative flex-wrap py-8 px-6 col-span-1 row-span-1 bg-nearBlack border-4 border-white rounded-xl max-w-lg mx-auto mb-12">
+      <div class="result col-span-1 row-span-1 h-full w-full absolute -z-10"></div>
       <p class="w-full text-center text-lg font-semibold text-white mb-3">True target earnings:</p>
       <p class="text-white w-full text-center text-4xl font-semibold mb-4">{{ targetSalary.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) }}</p>
       <p class="w-full text-center text-lg font-semibold text-white mb-3">Freelance rates are:</p>
@@ -125,11 +157,21 @@
           <p class="text-white text-xl font-bold text-center">{{ Math.ceil(monthlyRate).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) }}</p>  
         </div>
       </div>
+      </div>
     </section>
   </main>
 </template>
 
+
 <style scoped>
+input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        display: none;
+      }
+      input[type=number] {
+        -moz-appearance: textfield;
+        /* Firefox */
+      }
 .headerText {
 background: linear-gradient(90.53deg, #9E00FF 0.94%, #FF006B 99.81%);
 -webkit-background-clip: text;
